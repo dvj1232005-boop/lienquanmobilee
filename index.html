@@ -48,7 +48,7 @@
         }
 
         /* =========================================================
-           02. RESET & BASE (TECH GRID BACKGROUND)
+           02. RESET & BASE
         ========================================================= */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html, body { touch-action: manipulation; -webkit-text-size-adjust: 100%; }
@@ -58,25 +58,12 @@
             transition: background-color 0.5s ease, color 0.5s ease;
             min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; position: relative;
             -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased;
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(239, 68, 68, 0.05), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.05), transparent 25%);
         }
         .mono { font-family: 'JetBrains Mono', monospace; }
 
         input, select, textarea, button, input[type="text"] {
             font-size: 16px !important; touch-action: manipulation;
         }
-
-        /* CYBER SCANLINE OVERLAY */
-        .cyber-scanline {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999;
-            pointer-events: none; opacity: 0.03;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1) 50%, rgba(255,255,255,0));
-            background-size: 100% 8px;
-            animation: scanline 8s linear infinite;
-        }
-        @keyframes scanline { 0% { transform: translateY(-100vh); } 100% { transform: translateY(100vh); } }
 
         /* =========================================================
            03. BACKGROUND EFFECTS
@@ -106,17 +93,16 @@
         .brand-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; transition: transform 0.2s; }
         .brand-logo:active { transform: scale(0.95); }
         .brand-logo-text { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
-        .brand-logo-title { font-weight: 800; font-size: 19px; letter-spacing: 0.5px; line-height: 1; text-transform: uppercase; color: var(--text-main); text-shadow: 0 0 10px rgba(255,255,255,0.2);}
+        .brand-logo-title { font-weight: 800; font-size: 19px; letter-spacing: 0.5px; line-height: 1; text-transform: uppercase; color: var(--text-main); }
         .brand-logo-sub { font-size: 9px; font-weight: 800; color: var(--primary); letter-spacing: 1px; line-height: 1; text-transform: uppercase; }
 
         .update-ticker { font-size: 11px; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 6px; background: var(--bg-glass); padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border-glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); justify-content: center; position: relative; overflow: hidden;}
-        .update-ticker::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); animation: scan 3s infinite; }
         .update-pulse { width: 6px; height: 6px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); animation: blink 1.5s infinite; flex-shrink: 0; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
         .header-controls { display: flex; align-items: center; gap: 10px; }
         .theme-toggle { background: var(--bg-glass); border: 1px solid var(--border-glass); color: var(--text-main); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); flex-shrink: 0; }
-        .theme-toggle:hover { box-shadow: 0 0 15px var(--primary-glow); border-color: var(--primary); color: var(--primary); }
+        .theme-toggle:hover { border-color: var(--primary); color: var(--primary); }
         .theme-toggle:active { transform: scale(0.9) rotate(15deg); }
 
         @media (max-width: 600px) {
@@ -136,7 +122,7 @@
 
         .card-header { text-align: center; margin-bottom: 24px; }
         
-        /* CYBER GLITCH TITLE */
+        /* CYBER GLITCH TITLE (CHỈ TÁC DỤNG LÊN CHỮ NÀY) */
         .card-title { font-family: 'Oswald', sans-serif; font-size: 42px; font-weight: 800; letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase; color: var(--text-main); position: relative; display: inline-block; z-index: 1;}
         .card-title.glitch::before, .card-title.glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .card-title.glitch::before { left: 2px; text-shadow: -2px 0 var(--primary); animation: glitch-anim-1 2s infinite linear alternate-reverse; }
@@ -165,7 +151,7 @@
         @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         /* =========================================================
-           06. BENTO GRID (TECH HOVER SWEEP)
+           06. BENTO GRID (GIỚI THIỆU)
         ========================================================= */
         .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
         .bento-card { 
@@ -173,28 +159,24 @@
             border: 1px solid var(--border-glass); border-radius: 24px; padding: 24px; 
             box-shadow: var(--shadow-soft), inset 0 0 20px rgba(0,0,0,0.2); 
             position: relative; overflow: hidden; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
             background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px); background-size: 20px 20px; 
         }
-        /* LIGHT SWEEP EFFECT */
-        .bento-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent); transform: skewX(-20deg); transition: 0.5s; z-index: 0; pointer-events: none;}
-        .bento-card:hover::before { left: 150%; }
-        .bento-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 0 0 1px var(--primary-glow); border-color: rgba(255,255,255,0.2); }
-        .bento-card > * { position: relative; z-index: 1; } /* Keep content above sweep */
+        .bento-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
 
         .intro-list { color: var(--text-muted); font-size: 13px; line-height: 1.6; padding-left: 16px; font-weight: 500; margin-top: 12px; }
         .intro-list li { margin-bottom: 6px; }
         .intro-list strong { color: var(--text-main); }
 
         /* =========================================================
-           07. FORMS & DROPDOWN UI (TECH GLOW)
+           07. FORMS & DROPDOWN UI
         ========================================================= */
         .input-wrapper { position: relative; margin-bottom: 24px; }
         .input-label { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
         .input-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; transition: 0.3s; z-index: 2;}
         
         .form-control { width: 100%; padding: 18px 20px 18px 52px; border-radius: 18px; border: 2px solid var(--border-glass); background: var(--input-bg); color: var(--text-main); font-family: inherit; font-weight: 600; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); -webkit-appearance: none; appearance: none; }
-        .form-control:focus { background: var(--bg-glass-heavy); border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow), inset 0 0 10px rgba(220, 38, 38, 0.1); outline: none; transform: translateY(-2px); }
+        .form-control:focus { background: var(--bg-glass-heavy); border-color: var(--primary); outline: none; }
         .form-control:focus + .input-icon { color: var(--primary); filter: drop-shadow(0 0 5px var(--primary)); }
         
         select.form-control option { background-color: var(--bg-base); color: var(--text-main); }
@@ -202,7 +184,7 @@
         .calendar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 32px; }
         .day-card { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 20px; padding: 16px; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: inset 0 2px 10px rgba(0,0,0,0.02); position: relative; z-index: 1; }
         .day-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
-        .day-card:focus-within { border-color: var(--primary); background: var(--bg-glass-heavy); box-shadow: 0 8px 24px var(--primary-glow); }
+        .day-card:focus-within { border-color: var(--primary); background: var(--bg-glass-heavy); }
         
         .custom-dropdown { position: relative; width: 100%; font-family: inherit; }
         .dropdown-selected { width: 100%; padding: 14px 16px; border-radius: 14px; border: 2px solid transparent; background: var(--input-bg); color: var(--text-main); font-weight: 800; font-size: 14px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); user-select: none; }
@@ -225,12 +207,10 @@
         .dropdown-selected.sel-double { background: var(--primary-light); color: var(--primary); border-color: rgba(239, 68, 68, 0.6); box-shadow: 0 0 10px var(--primary-glow); }
 
         /* =========================================================
-           08. BUTTONS (CYBER BUTTON)
+           08. BUTTONS
         ========================================================= */
         .btn { width: 100%; padding: 18px; border-radius: 18px; font-family: inherit; font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); border: none; position: relative; overflow: hidden; }
         .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: white; box-shadow: 0 10px 20px -5px var(--primary-glow); border: 1px solid rgba(255,255,255,0.2); }
-        .btn-primary::after { content: ''; position: absolute; top: 0; left: -100%; width: 30%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent); transform: skewX(-25deg); transition: 0.5s; }
-        .btn-primary:hover::after { left: 150%; animation: sweep 2s infinite; }
         .btn-primary:active:not(:disabled) { transform: scale(0.96); box-shadow: 0 4px 10px -5px var(--primary-glow); }
         .btn-primary:disabled { opacity: 0.6; filter: grayscale(0.5); cursor: not-allowed; }
         
@@ -238,29 +218,22 @@
         .btn-outline:hover { border-color: var(--primary); color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
         .btn-outline:active { transform: scale(0.96); background: var(--border-glass); }
 
-        @keyframes sweep { 0% { left: -100%; } 100% { left: 150%; } }
-
         /* =========================================================
-           09. PUBLIC ROSTER, AI PREDICTION & ADMIN TABLE
+           09. PUBLIC ROSTER, PREDICTION & ADMIN TABLE
         ========================================================= */
         .roster-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px dashed var(--border-glass); }
-        .counter-badge { background: var(--primary-light); color: var(--primary); font-weight: 800; font-size: 16px; padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3); box-shadow: 0 0 10px var(--primary-glow); animation: pulse-shadow 2s infinite; }
-        @keyframes pulse-shadow { 0% { box-shadow: 0 0 10px var(--primary-glow); } 50% { box-shadow: 0 0 20px var(--primary-glow); } 100% { box-shadow: 0 0 10px var(--primary-glow); } }
+        .counter-badge { background: var(--primary-light); color: var(--primary); font-weight: 800; font-size: 16px; padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3); box-shadow: 0 0 10px var(--primary-glow); }
 
         .split-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         @media (max-width: 768px) { .split-tables { grid-template-columns: 1fr; } }
 
-        /* AI PROGRESS BAR (TECH STRIPES) */
+        /* AI PROGRESS BAR */
         .ai-progress-container { width: 100%; height: 20px; background: rgba(239, 68, 68, 0.2); border-radius: 10px; overflow: hidden; display: flex; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); position: relative; border: 1px solid rgba(255,255,255,0.1);}
         .ai-progress-bar {
             height: 100%; background: var(--info);
-            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.15) 75%, transparent 75%, transparent);
-            background-size: 20px 20px;
-            animation: moveStripes 1s linear infinite;
             transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); 
             box-shadow: 0 0 15px var(--info);
         }
-        @keyframes moveStripes { 0% { background-position: 0 0; } 100% { background-position: 20px 0; } }
 
         .dashboard-container { position: relative; }
         .dashboard-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px dashed var(--border-glass); }
@@ -273,9 +246,6 @@
         .dock-btn svg { width: 24px; height: 24px; filter: drop-shadow(0 0 5px currentColor); }
 
         .table-container { border-radius: 20px; border: 1px solid var(--border-glass); background: var(--bg-glass); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); position: relative; }
-        /* GLOW BORDER CHO TEAM */
-        .table-container.team-qc { border: 1px solid rgba(59, 130, 246, 0.3); box-shadow: 0 0 20px rgba(59, 130, 246, 0.1); }
-        .table-container.team-dd { border: 1px solid rgba(239, 68, 68, 0.3); box-shadow: 0 0 20px rgba(239, 68, 68, 0.1); }
         
         .table-wrapper { overflow-x: auto; max-height: 500px; -webkit-overflow-scrolling: touch; }
         .table-wrapper::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -334,9 +304,6 @@
 </head>
 
 <body>
-
-<!-- LỚP PHỦ SCANLINE CÔNG NGHỆ -->
-<div class="cyber-scanline"></div>
 
 <canvas id="bg-canvas"></canvas>
 <div class="mesh-blob blob-1"></div>
@@ -572,14 +539,14 @@
 
             <!-- BẢNG DANH SÁCH 2 BÊN -->
             <div class="split-tables">
-                <div class="table-container team-qc">
-                    <h4 style="text-align:center; padding: 16px; background: rgba(59, 130, 246, 0.15); color: #3b82f6; margin:0; border-bottom: 1px solid rgba(59, 130, 246, 0.3); font-family: 'Oswald', sans-serif; letter-spacing: 1px;">TEAM QUY CHẾ</h4>
+                <div class="table-container">
+                    <h4 style="text-align:center; padding: 16px; background: rgba(59, 130, 246, 0.15); color: #3b82f6; margin:0; border-bottom: 1px solid var(--border-glass); font-family: 'Oswald', sans-serif; letter-spacing: 1px;">TEAM QUY CHẾ</h4>
                     <div id="publicTableQC" class="table-wrapper">
                         <div style="padding: 30px; text-align: center; color: var(--text-muted); font-style: italic;"><div class="skeleton" style="height: 60px; border-radius: 12px;"></div></div>
                     </div>
                 </div>
-                <div class="table-container team-dd">
-                    <h4 style="text-align:center; padding: 16px; background: rgba(239, 68, 68, 0.15); color: #ef4444; margin:0; border-bottom: 1px solid rgba(239, 68, 68, 0.3); font-family: 'Oswald', sans-serif; letter-spacing: 1px;">TEAM ĐỀN ĐÔ</h4>
+                <div class="table-container">
+                    <h4 style="text-align:center; padding: 16px; background: rgba(239, 68, 68, 0.15); color: #ef4444; margin:0; border-bottom: 1px solid var(--border-glass); font-family: 'Oswald', sans-serif; letter-spacing: 1px;">TEAM ĐỀN ĐÔ</h4>
                     <div id="publicTableDD" class="table-wrapper">
                         <div style="padding: 30px; text-align: center; color: var(--text-muted); font-style: italic;"><div class="skeleton" style="height: 60px; border-radius: 12px;"></div></div>
                     </div>
