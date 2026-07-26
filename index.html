@@ -20,7 +20,7 @@
            01. DESIGN SYSTEM & CSS VARIABLES
         ========================================================= */
         :root[data-theme="light"] {
-            --primary: #dc2626; --primary-hover: #b91c1c; --primary-light: #fef2f2; --primary-glow: rgba(220, 38, 38, 0.3);
+            --primary: #dc2626; --primary-hover: #b91c1c; --primary-light: #fef2f2; --primary-glow: rgba(220, 38, 38, 0.4);
             --bg-base: #f8fafc; --bg-glass: rgba(255, 255, 255, 0.75); --bg-glass-heavy: rgba(255, 255, 255, 0.95);
             --text-main: #0f172a; --text-muted: #64748b;
             --border-glass: rgba(0, 0, 0, 0.08); --input-bg: rgba(241, 245, 249, 0.8);
@@ -48,7 +48,7 @@
         }
 
         /* =========================================================
-           02. RESET & BASE
+           02. RESET & BASE (TECH GRID BACKGROUND)
         ========================================================= */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html, body { touch-action: manipulation; -webkit-text-size-adjust: 100%; }
@@ -58,12 +58,25 @@
             transition: background-color 0.5s ease, color 0.5s ease;
             min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; position: relative;
             -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(239, 68, 68, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.05), transparent 25%);
         }
         .mono { font-family: 'JetBrains Mono', monospace; }
 
         input, select, textarea, button, input[type="text"] {
             font-size: 16px !important; touch-action: manipulation;
         }
+
+        /* CYBER SCANLINE OVERLAY */
+        .cyber-scanline {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999;
+            pointer-events: none; opacity: 0.03;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1) 50%, rgba(255,255,255,0));
+            background-size: 100% 8px;
+            animation: scanline 8s linear infinite;
+        }
+        @keyframes scanline { 0% { transform: translateY(-100vh); } 100% { transform: translateY(100vh); } }
 
         /* =========================================================
            03. BACKGROUND EFFECTS
@@ -93,16 +106,17 @@
         .brand-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; transition: transform 0.2s; }
         .brand-logo:active { transform: scale(0.95); }
         .brand-logo-text { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
-        .brand-logo-title { font-weight: 800; font-size: 19px; letter-spacing: 0.5px; line-height: 1; text-transform: uppercase; color: var(--text-main); }
+        .brand-logo-title { font-weight: 800; font-size: 19px; letter-spacing: 0.5px; line-height: 1; text-transform: uppercase; color: var(--text-main); text-shadow: 0 0 10px rgba(255,255,255,0.2);}
         .brand-logo-sub { font-size: 9px; font-weight: 800; color: var(--primary); letter-spacing: 1px; line-height: 1; text-transform: uppercase; }
 
-        .update-ticker { font-size: 11px; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 6px; background: var(--bg-glass); padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border-glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); justify-content: center; }
+        .update-ticker { font-size: 11px; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 6px; background: var(--bg-glass); padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border-glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); justify-content: center; position: relative; overflow: hidden;}
+        .update-ticker::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); animation: scan 3s infinite; }
         .update-pulse { width: 6px; height: 6px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); animation: blink 1.5s infinite; flex-shrink: 0; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
         .header-controls { display: flex; align-items: center; gap: 10px; }
-        
         .theme-toggle { background: var(--bg-glass); border: 1px solid var(--border-glass); color: var(--text-main); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); flex-shrink: 0; }
+        .theme-toggle:hover { box-shadow: 0 0 15px var(--primary-glow); border-color: var(--primary); color: var(--primary); }
         .theme-toggle:active { transform: scale(0.9) rotate(15deg); }
 
         @media (max-width: 600px) {
@@ -113,54 +127,82 @@
         }
 
         /* =========================================================
-           05. GLASS CARD & BANNER & TYPEWRITER EFFECT
+           05. GLASS CARD, GLITCH TITLE & BANNER
         ========================================================= */
         .card { background: var(--bg-glass-heavy); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-radius: 32px; padding: 36px 28px; box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255,255,255,0.1); border: 1px solid var(--border-glass); margin-bottom: 24px; animation: scaleIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; opacity: 0; transform: translateY(30px); }
         @keyframes scaleIn { to { opacity: 1; transform: translateY(0); } }
         
-        /* BANNER STYLE */
         .banner-img { width: 100%; height: auto; max-height: 280px; object-fit: cover; border-radius: 20px; border: 1px solid var(--border-glass); margin-bottom: 24px; box-shadow: var(--shadow-soft); display: none; }
 
         .card-header { text-align: center; margin-bottom: 24px; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 40px; font-weight: 800; letter-spacing: 1px; margin-bottom: 6px; text-shadow: 0 0 15px var(--primary-glow); text-transform: uppercase; color: var(--text-main); }
         
-        /* Typewriter Effect CSS */
-        .slogan-container {
-            display: flex; justify-content: center; align-items: center;
-            min-height: 24px; width: 100%; margin-bottom: 4px;
+        /* CYBER GLITCH TITLE */
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 42px; font-weight: 800; letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase; color: var(--text-main); position: relative; display: inline-block; z-index: 1;}
+        .card-title.glitch::before, .card-title.glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .card-title.glitch::before { left: 2px; text-shadow: -2px 0 var(--primary); animation: glitch-anim-1 2s infinite linear alternate-reverse; }
+        .card-title.glitch::after { left: -2px; text-shadow: 2px 0 var(--info); animation: glitch-anim-2 3s infinite linear alternate-reverse; }
+        
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); }
+            20% { clip-path: inset(60% 0 10% 0); }
+            40% { clip-path: inset(40% 0 50% 0); }
+            60% { clip-path: inset(80% 0 5% 0); }
+            80% { clip-path: inset(10% 0 70% 0); }
+            100% { clip-path: inset(30% 0 20% 0); }
         }
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 60% 0); }
+            20% { clip-path: inset(80% 0 5% 0); }
+            40% { clip-path: inset(30% 0 20% 0); }
+            60% { clip-path: inset(70% 0 10% 0); }
+            80% { clip-path: inset(50% 0 30% 0); }
+            100% { clip-path: inset(5% 0 80% 0); }
+        }
+
+        .slogan-container { display: flex; justify-content: center; align-items: center; min-height: 24px; width: 100%; margin-bottom: 4px; }
         .slogan-text { font-size: 13.5px; font-weight: 600; color: var(--text-muted); font-style: italic; }
         .type-cursor { font-size: 14px; color: var(--primary); font-weight: 800; margin-left: 2px; animation: blinkCursor 0.7s infinite; }
         @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         /* =========================================================
-           06. BENTO GRID (FOR INTRO)
+           06. BENTO GRID (TECH HOVER SWEEP)
         ========================================================= */
         .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
-        .bento-card { background: linear-gradient(145deg, var(--bg-glass-heavy) 0%, rgba(15, 23, 42, 0.4) 100%); border: 1px solid var(--border-glass); border-radius: 24px; padding: 24px; box-shadow: var(--shadow-soft), inset 0 0 20px rgba(0,0,0,0.2); position: relative; overflow: hidden; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); transition: transform 0.3s ease, box-shadow 0.3s ease; background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 20px 20px; }
-        .bento-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 0 0 1px var(--primary-glow); }
+        .bento-card { 
+            background: linear-gradient(145deg, var(--bg-glass-heavy) 0%, rgba(15, 23, 42, 0.4) 100%); 
+            border: 1px solid var(--border-glass); border-radius: 24px; padding: 24px; 
+            box-shadow: var(--shadow-soft), inset 0 0 20px rgba(0,0,0,0.2); 
+            position: relative; overflow: hidden; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s; 
+            background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px); background-size: 20px 20px; 
+        }
+        /* LIGHT SWEEP EFFECT */
+        .bento-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent); transform: skewX(-20deg); transition: 0.5s; z-index: 0; pointer-events: none;}
+        .bento-card:hover::before { left: 150%; }
+        .bento-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 0 0 1px var(--primary-glow); border-color: rgba(255,255,255,0.2); }
+        .bento-card > * { position: relative; z-index: 1; } /* Keep content above sweep */
+
         .intro-list { color: var(--text-muted); font-size: 13px; line-height: 1.6; padding-left: 16px; font-weight: 500; margin-top: 12px; }
         .intro-list li { margin-bottom: 6px; }
         .intro-list strong { color: var(--text-main); }
 
         /* =========================================================
-           07. FORMS & DROPDOWN UI
+           07. FORMS & DROPDOWN UI (TECH GLOW)
         ========================================================= */
         .input-wrapper { position: relative; margin-bottom: 24px; }
         .input-label { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
         .input-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; transition: 0.3s; z-index: 2;}
-        .form-control { width: 100%; padding: 18px 20px 18px 52px; border-radius: 18px; border: 2px solid var(--border-glass); background: var(--input-bg); color: var(--text-main); font-family: inherit; font-weight: 600; transition: 0.3s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); -webkit-appearance: none; appearance: none; }
-        .form-control:focus { background: var(--bg-glass-heavy); border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); outline: none; }
-        .form-control:focus + .input-icon { color: var(--primary); }
+        
+        .form-control { width: 100%; padding: 18px 20px 18px 52px; border-radius: 18px; border: 2px solid var(--border-glass); background: var(--input-bg); color: var(--text-main); font-family: inherit; font-weight: 600; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); -webkit-appearance: none; appearance: none; }
+        .form-control:focus { background: var(--bg-glass-heavy); border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow), inset 0 0 10px rgba(220, 38, 38, 0.1); outline: none; transform: translateY(-2px); }
+        .form-control:focus + .input-icon { color: var(--primary); filter: drop-shadow(0 0 5px var(--primary)); }
         
         select.form-control option { background-color: var(--bg-base); color: var(--text-main); }
 
         .calendar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 32px; }
-        
         .day-card { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 20px; padding: 16px; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: inset 0 2px 10px rgba(0,0,0,0.02); position: relative; z-index: 1; }
         .day-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
         .day-card:focus-within { border-color: var(--primary); background: var(--bg-glass-heavy); box-shadow: 0 8px 24px var(--primary-glow); }
-        .day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-weight: 800; font-size: 13px; color: var(--text-main); }
         
         .custom-dropdown { position: relative; width: 100%; font-family: inherit; }
         .dropdown-selected { width: 100%; padding: 14px 16px; border-radius: 14px; border: 2px solid transparent; background: var(--input-bg); color: var(--text-main); font-weight: 800; font-size: 14px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); user-select: none; }
@@ -183,22 +225,42 @@
         .dropdown-selected.sel-double { background: var(--primary-light); color: var(--primary); border-color: rgba(239, 68, 68, 0.6); box-shadow: 0 0 10px var(--primary-glow); }
 
         /* =========================================================
-           08. BUTTONS & ACTIONS
+           08. BUTTONS (CYBER BUTTON)
         ========================================================= */
-        .btn { width: 100%; padding: 18px; border-radius: 18px; font-family: inherit; font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); border: none; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: white; box-shadow: 0 10px 20px -5px var(--primary-glow); }
+        .btn { width: 100%; padding: 18px; border-radius: 18px; font-family: inherit; font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); border: none; position: relative; overflow: hidden; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: white; box-shadow: 0 10px 20px -5px var(--primary-glow); border: 1px solid rgba(255,255,255,0.2); }
+        .btn-primary::after { content: ''; position: absolute; top: 0; left: -100%; width: 30%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent); transform: skewX(-25deg); transition: 0.5s; }
+        .btn-primary:hover::after { left: 150%; animation: sweep 2s infinite; }
         .btn-primary:active:not(:disabled) { transform: scale(0.96); box-shadow: 0 4px 10px -5px var(--primary-glow); }
+        .btn-primary:disabled { opacity: 0.6; filter: grayscale(0.5); cursor: not-allowed; }
+        
         .btn-outline { background: transparent; border: 2px solid var(--border-glass); color: var(--text-main); margin-top: 12px; }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
         .btn-outline:active { transform: scale(0.96); background: var(--border-glass); }
 
+        @keyframes sweep { 0% { left: -100%; } 100% { left: 150%; } }
+
         /* =========================================================
-           09. PUBLIC ROSTER, PREDICTION & ADMIN TABLE
+           09. PUBLIC ROSTER, AI PREDICTION & ADMIN TABLE
         ========================================================= */
         .roster-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px dashed var(--border-glass); }
-        .counter-badge { background: var(--primary-light); color: var(--primary); font-weight: 800; font-size: 16px; padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3); box-shadow: 0 0 10px var(--primary-glow); }
-        
+        .counter-badge { background: var(--primary-light); color: var(--primary); font-weight: 800; font-size: 16px; padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3); box-shadow: 0 0 10px var(--primary-glow); animation: pulse-shadow 2s infinite; }
+        @keyframes pulse-shadow { 0% { box-shadow: 0 0 10px var(--primary-glow); } 50% { box-shadow: 0 0 20px var(--primary-glow); } 100% { box-shadow: 0 0 10px var(--primary-glow); } }
+
         .split-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         @media (max-width: 768px) { .split-tables { grid-template-columns: 1fr; } }
+
+        /* AI PROGRESS BAR (TECH STRIPES) */
+        .ai-progress-container { width: 100%; height: 20px; background: rgba(239, 68, 68, 0.2); border-radius: 10px; overflow: hidden; display: flex; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); position: relative; border: 1px solid rgba(255,255,255,0.1);}
+        .ai-progress-bar {
+            height: 100%; background: var(--info);
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.15) 75%, transparent 75%, transparent);
+            background-size: 20px 20px;
+            animation: moveStripes 1s linear infinite;
+            transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); 
+            box-shadow: 0 0 15px var(--info);
+        }
+        @keyframes moveStripes { 0% { background-position: 0 0; } 100% { background-position: 20px 0; } }
 
         .dashboard-container { position: relative; }
         .dashboard-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px dashed var(--border-glass); }
@@ -211,15 +273,18 @@
         .dock-btn svg { width: 24px; height: 24px; filter: drop-shadow(0 0 5px currentColor); }
 
         .table-container { border-radius: 20px; border: 1px solid var(--border-glass); background: var(--bg-glass); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); position: relative; }
+        /* GLOW BORDER CHO TEAM */
+        .table-container.team-qc { border: 1px solid rgba(59, 130, 246, 0.3); box-shadow: 0 0 20px rgba(59, 130, 246, 0.1); }
+        .table-container.team-dd { border: 1px solid rgba(239, 68, 68, 0.3); box-shadow: 0 0 20px rgba(239, 68, 68, 0.1); }
+        
         .table-wrapper { overflow-x: auto; max-height: 500px; -webkit-overflow-scrolling: touch; }
-        .table-wrapper::-webkit-scrollbar { display: none; }
+        .table-wrapper::-webkit-scrollbar { width: 4px; height: 4px; }
+        .table-wrapper::-webkit-scrollbar-thumb { background: var(--border-glass); border-radius: 10px; }
+        
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th { background: rgba(0,0,0,0.4); color: var(--text-muted); font-weight: 800; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; padding: 18px 12px; text-align: center; border-bottom: 2px solid var(--primary); white-space: nowrap; position: sticky; top: 0; z-index: 10; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-        th:first-child { text-align: left; left: 0; z-index: 20; background: rgba(0,0,0,0.6); box-shadow: 2px 0 5px rgba(0,0,0,0.2); }
         td { padding: 16px 12px; text-align: center; border-bottom: 1px solid var(--border-glass); font-weight: 600; white-space: nowrap; transition: background 0.2s; }
         tr:hover td { background: rgba(255,255,255,0.05); }
-        td:first-child { text-align: left; position: sticky; left: 0; background: var(--bg-glass-heavy); z-index: 5; font-weight: 700; color: var(--text-main); box-shadow: 2px 0 5px rgba(0,0,0,0.05); border-left: 3px solid transparent; transition: 0.2s; }
-        tr:hover td:first-child { border-left: 3px solid var(--primary); }
 
         .shift-badge { display: inline-flex; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 11px; font-family: 'JetBrains Mono', monospace; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .badge-c1 { background: var(--info-bg); color: var(--info); border: 1px solid rgba(59, 130, 246, 0.3); } .badge-c2 { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); } .badge-c3 { background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3); } .badge-f { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); } .badge-double { background: var(--primary-light); color: var(--primary); border: 1px solid rgba(220, 38, 38, 0.4); box-shadow: 0 0 10px var(--primary-glow);} .badge-none { background: transparent; color: var(--text-muted); border: 1px solid var(--border-glass); box-shadow: none;}
@@ -242,11 +307,12 @@
 
         @media (max-width: 600px) {
             .card { padding: 28px 20px; border-radius: 28px; }
-            .card-title { font-size: 32px; }
+            .card-title { font-size: 36px; }
             .toast-container { left: 16px; right: 16px; align-items: center; }
             .toast { width: 100%; transform: translateY(-100px); }
             .toast.show { transform: translateY(0); }
             .action-dock { grid-template-columns: repeat(3, 1fr) !important; }
+            .bento-grid { grid-template-columns: 1fr; }
         }
 
         /* =========================================================
@@ -268,6 +334,9 @@
 </head>
 
 <body>
+
+<!-- LỚP PHỦ SCANLINE CÔNG NGHỆ -->
+<div class="cyber-scanline"></div>
 
 <canvas id="bg-canvas"></canvas>
 <div class="mesh-blob blob-1"></div>
@@ -294,7 +363,7 @@
 
             <div class="update-ticker" id="timeTicker">
                 <div class="update-pulse"></div> 
-                <span>Realtime Sync:</span> <span class="mono" id="realTime">--:--:--</span>
+                <span>System Sync:</span> <span class="mono" id="realTime" style="color: var(--primary);">--:--:--</span>
             </div>
 
             <button class="theme-toggle" id="themeBtn" aria-label="Toggle Theme">
@@ -340,9 +409,9 @@
         <img id="mainBanner" src="avata.jpg" alt="AOV Banner" class="banner-img">
 
         <div class="card-header">
-            <h2 class="card-title">LIÊN QUÂN MOBILE</h2>
+            <h2 class="card-title glitch" data-text="LIÊN QUÂN MOBILE">LIÊN QUÂN MOBILE</h2>
             <div class="slogan-container">
-                <span id="typewriter-text" class="slogan-text"></span><span class="type-cursor">|</span>
+                <span id="typewriter-text" class="slogan-text"></span><span class="type-cursor">_</span>
             </div>
         </div>
 
@@ -358,7 +427,7 @@
                     <li><strong>Bản đồ:</strong> Bình nguyên vô tận (5v5).</li>
                     <li><strong>Chế độ:</strong> Cấm chọn Quốc tế.</li>
                     <li><strong>Vòng loại:</strong> BO1 - Sinh tử.</li>
-                    <li><strong>Chung kết:</strong> BO3 - Tranh cúp vô địch.</li>
+                    <li><strong>Chung kết:</strong> BO3 - Tranh cúp.</li>
                 </ul>
             </div>
             
@@ -369,10 +438,10 @@
                 </div>
                 <h3 style="font-size: 17px; margin-bottom: 8px; text-transform: uppercase;">Lan tỏa tinh thần</h3>
                 <ul class="intro-list">
-                    <li>Gắn kết đồng đội giữa các cơ sở.</li>
+                    <li>Gắn kết đồng đội 2 cơ sở.</li>
                     <li>Tạo sân chơi lành mạnh, xả stress.</li>
-                    <li>Nâng cao tư duy chiến thuật & Teamwork.</li>
-                    <li>Vinh danh những cá nhân xuất sắc.</li>
+                    <li>Nâng tầm tư duy chiến thuật.</li>
+                    <li>Vinh danh cá nhân xuất sắc.</li>
                 </ul>
             </div>
 
@@ -384,10 +453,10 @@
                 </div>
                 <h3 style="font-size: 17px; margin-bottom: 8px; text-transform: uppercase;">Phần thưởng hấp dẫn</h3>
                 <ul class="intro-list">
-                    <li><strong>Team Vô Địch:</strong> Cúp, Tiền mặt & Nước free.</li>
-                    <li><strong>MVP Giải đấu:</strong> Thẻ Garena / Quà tặng.</li>
-                    <li><strong>Team Á Quân:</strong> Voucher giảm giá tại quán.</li>
-                    <li><strong>Team Bét:</strong> Được rửa bát miễn phí =))</li>
+                    <li><strong>Vô Địch:</strong> Cúp, Tiền mặt & Nước free.</li>
+                    <li><strong>MVP:</strong> Thẻ Garena / Quà tặng.</li>
+                    <li><strong>Á Quân:</strong> Voucher giảm giá tại quán.</li>
+                    <li><strong>Hạng bét:</strong> Rửa bát miễn phí =))</li>
                 </ul>
             </div>
         </div>
@@ -474,14 +543,14 @@
             </div>
         </div>
 
-        <button id="submitBtn" class="btn btn-primary">Xác Nhận Đăng Ký</button>
+        <button id="submitBtn" class="btn btn-primary">Khởi Động Chuỗi Trận</button>
 
         <!-- KHU VỰC CÔNG KHAI DANH SÁCH -->
         <div class="roster-section" style="margin-top: 48px;">
             <div class="roster-header">
                 <h3 style="font-size: 16px; margin: 0; display: flex; align-items: center; gap: 8px;">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg> 
-                    BẢNG VÀNG 2 PHE
+                    BẢNG VÀNG TRANH ĐẤU
                 </h3>
                 <div class="counter-badge">
                     Đã có <span id="publicCounter">0</span> tham gia
@@ -490,27 +559,27 @@
             
             <!-- THANH TỶ LỆ THẮNG (TỰ ĐỘNG HIỆN KHI ĐỦ 5 NGƯỜI MỖI BÊN) -->
             <div id="predictionBox" class="hidden" style="background: var(--bg-glass-heavy); border: 1px solid var(--border-glass); border-radius: 20px; padding: 20px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-                <h4 style="text-align: center; margin-bottom: 12px; color: var(--primary); text-transform: uppercase; font-family: 'Oswald', sans-serif; font-size: 18px; letter-spacing: 1px;">Dự đoán Tỷ Lệ Thắng (AI ESPORTS)</h4>
+                <h4 style="text-align: center; margin-bottom: 12px; color: var(--primary); text-transform: uppercase; font-family: 'Oswald', sans-serif; font-size: 18px; letter-spacing: 1px;">AI ESPORTS ANALYSIS</h4>
                 <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 15px; margin-bottom: 12px; font-family: 'JetBrains Mono', monospace;">
-                    <span style="color: #3b82f6;">QUY CHẾ: <span id="winRateQC">50</span>%</span>
-                    <span style="color: #ef4444;">ĐỀN ĐÔ: <span id="winRateDD">50</span>%</span>
+                    <span style="color: #3b82f6; text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);">QUY CHẾ: <span id="winRateQC">50</span>%</span>
+                    <span style="color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);">ĐỀN ĐÔ: <span id="winRateDD">50</span>%</span>
                 </div>
-                <div style="width: 100%; height: 16px; background: #ef4444; border-radius: 8px; overflow: hidden; display: flex; box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);">
-                    <div id="winBarQC" style="width: 50%; height: 100%; background: #3b82f6; transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 0 10px #3b82f6;"></div>
+                <div class="ai-progress-container">
+                    <div id="winBarQC" class="ai-progress-bar" style="width: 50%;"></div>
                 </div>
-                <p style="text-align: center; margin-top: 12px; font-size: 11px; color: var(--text-muted); font-style: italic;">*Hệ thống tự động phân tích dựa trên chất lượng đội hình.</p>
+                <p style="text-align: center; margin-top: 12px; font-size: 11px; color: var(--text-muted); font-style: italic;">*Hệ thống tự động phân tích tỷ lệ thắng dựa trên chất lượng đội hình.</p>
             </div>
 
             <!-- BẢNG DANH SÁCH 2 BÊN -->
             <div class="split-tables">
-                <div class="table-container">
-                    <h4 style="text-align:center; padding: 16px; background: rgba(59, 130, 246, 0.15); color: #3b82f6; margin:0; border-bottom: 1px solid var(--border-glass); font-family: 'Oswald', sans-serif; letter-spacing: 1px;">TEAM QUY CHẾ</h4>
+                <div class="table-container team-qc">
+                    <h4 style="text-align:center; padding: 16px; background: rgba(59, 130, 246, 0.15); color: #3b82f6; margin:0; border-bottom: 1px solid rgba(59, 130, 246, 0.3); font-family: 'Oswald', sans-serif; letter-spacing: 1px;">TEAM QUY CHẾ</h4>
                     <div id="publicTableQC" class="table-wrapper">
                         <div style="padding: 30px; text-align: center; color: var(--text-muted); font-style: italic;"><div class="skeleton" style="height: 60px; border-radius: 12px;"></div></div>
                     </div>
                 </div>
-                <div class="table-container">
-                    <h4 style="text-align:center; padding: 16px; background: rgba(239, 68, 68, 0.15); color: #ef4444; margin:0; border-bottom: 1px solid var(--border-glass); font-family: 'Oswald', sans-serif; letter-spacing: 1px;">TEAM ĐỀN ĐÔ</h4>
+                <div class="table-container team-dd">
+                    <h4 style="text-align:center; padding: 16px; background: rgba(239, 68, 68, 0.15); color: #ef4444; margin:0; border-bottom: 1px solid rgba(239, 68, 68, 0.3); font-family: 'Oswald', sans-serif; letter-spacing: 1px;">TEAM ĐỀN ĐÔ</h4>
                     <div id="publicTableDD" class="table-wrapper">
                         <div style="padding: 30px; text-align: center; color: var(--text-muted); font-style: italic;"><div class="skeleton" style="height: 60px; border-radius: 12px;"></div></div>
                     </div>
@@ -518,13 +587,13 @@
             </div>
         </div>
 
-        <button id="managerBtn" class="btn btn-outline" style="margin-top: 32px; font-size: 13px;">Công cụ Admin</button>
+        <button id="managerBtn" class="btn btn-outline" style="margin-top: 32px; font-size: 13px;">Giao thức System Admin</button>
     </main>
 
     <main class="card hidden" id="managerBox" style="position: relative; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
         <div id="loginSection" style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
             <div class="card-header" id="managerHeader" style="margin-bottom: 0; position: relative; z-index: 11; pointer-events: none;">
-                <h2 class="card-title" style="color: var(--primary);">Secure Access</h2>
+                <h2 class="card-title glitch" data-text="SECURE ACCESS" style="color: var(--primary);">SECURE ACCESS</h2>
                 <div class="card-subtitle">Khu vực dành cho Ban Tổ Chức</div>
             </div>
             <canvas id="swipeTrailCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; border-radius: 32px;"></canvas>
@@ -830,7 +899,6 @@
             bannerImg.src = snapshot.val();
             bannerImg.style.display = "block";
         } else {
-            // Thử kiểm tra có file avata.jpg cục bộ hay không (Fallback)
             bannerImg.src = "avata.jpg";
             bannerImg.onerror = () => { bannerImg.style.display = "none"; };
             bannerImg.style.display = "block";
@@ -872,27 +940,27 @@
         return htmlTable;
     }
 
-    // --- THUẬT TOÁN TÍNH TỶ LỆ THẮNG (DỰA THEO RULE YÊU CẦU) ---
+    // --- THUẬT TOÁN TÍNH TỶ LỆ THẮNG (AI PREDICTION) ---
     function calcWinRate(teamQC, teamDD) {
         let qcRac = teamQC.filter(x => x.rank === '🗑️ Rác').length;
         let qcTuat = teamQC.filter(x => x.rank === '🐕 Tuất').length;
         let ddRac = teamDD.filter(x => x.rank === '🗑️ Rác').length;
         let ddTuat = teamDD.filter(x => x.rank === '🐕 Tuất').length;
 
-        // Nếu 1 bên toàn Rác => Thắng 100%
+        // Rule: 5 Rác => Thắng 100%
         if (qcRac >= 5 && ddRac < 5) return 100;
         if (ddRac >= 5 && qcRac < 5) return 0;
         
-        // Nếu 1 bên toàn Tuất => Thua 100%
+        // Rule: 5 Tuất => Thua 100%
         if (qcTuat >= 5 && ddTuat < 5) return 0;
         if (ddTuat >= 5 && qcTuat < 5) return 100;
 
-        // Thuật toán giả ngẫu nhiên dựa vào tên đội hình (để % không bị giật đổi liên tục)
+        // Random logic dựa trên tổng mã ASCII của tên để kết quả không bị thay đổi ngẫu nhiên mỗi lần reload
         let str = teamQC.map(x=>x.name).join('') + teamDD.map(x=>x.name).join('');
         let hash = 0;
         for(let i=0; i<str.length; i++) hash += str.charCodeAt(i);
         
-        // Random từ 30% đến 70% 
+        // Dao động từ 30% đến 70% 
         return 30 + (hash % 41);
     }
 
@@ -921,7 +989,7 @@
 
         sortedNames.forEach(employeeName => {
             let node = data[employeeName];
-            node.name = employeeName; // Gắn thêm field name cho node
+            node.name = employeeName; 
             
             if(node.branch === "Quy Chế") qcList.push(node);
             else ddList.push(node);
@@ -929,14 +997,13 @@
             rawExcelDataExport += `${employeeName}\t${node.branch || ""}\t${node.slogan || ""}\t${node.rank || ""}\n`;
         });
         
-        // Hiển thị giao diện Table 2 đội
+        // Render 2 bảng
         document.getElementById("publicTableQC").innerHTML = generateTableHTML(qcList);
         document.getElementById("publicTableDD").innerHTML = generateTableHTML(ddList);
         
-        // Đếm tổng
         animateNumberCounter("publicCounter", 0, sortedNames.length, 800); 
 
-        // HIỂN THỊ TỶ LỆ THẮNG NẾU MỖI ĐỘI ĐẠT TRÊN 5 THÀNH VIÊN
+        // HIỂN THỊ TỶ LỆ THẮNG KHI MỖI BÊN >= 5 NGƯỜI
         const predictionBox = document.getElementById("predictionBox");
         if(qcList.length >= 5 && ddList.length >= 5) {
             let rateQC = calcWinRate(qcList, ddList);
